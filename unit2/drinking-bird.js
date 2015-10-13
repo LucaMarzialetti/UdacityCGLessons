@@ -5,10 +5,15 @@
 // Please work from the formal blueprint dimensions and positions shown at    //
 // https://www.udacity.com/wiki/cs291/notes                                   //
 //                                                                            //
-// The following materials should be used:                                    //
-// Hat and spine: cylinderMaterial (blue)                                     //
-// Head and bottom body: sphereMaterial (red)                                 //
-// Rest of body: cubeMaterial (orange)                                        //
+// The following forms and sizes should be used:                              //
+// Hat: cylinder. color blue (cylinderMaterial)                               //
+//      Diameter top 80, bottom, full height 80, edge 10                      //
+// Head: sphere, red (sphereMaterial), diameter 104                           //
+// Middle of base: cube, color orange (cubeMaterial), width 77, length 194    //
+// Feet: cube, color orange, width 6, length 194, height 52                   //
+// Legs: cube, color orange, width 6, length 64, height 386                   //
+// Body: sphere, red, diameter 116                                            //
+// Spine: cylinder, blue, diameter 24, length 390                             //
 //                                                                            //
 // So that the exercise passes, and the spheres and cylinders look good,      //
 // all SphereGeometry calls should be of the form:                            //
@@ -56,50 +61,85 @@ function init() {
 // Supporting frame for the bird - base + legs + feet
 function createSupport() {
 
-	var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xF07020 } );
+   var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xF07020 } );
 	// base
 	var cube;
-	cube = new THREE.Mesh(
+	cube = new THREE.Mesh( 
 		new THREE.CubeGeometry( 20+64+110, 4, 2*77 ), cubeMaterial );
 	cube.position.x = -45;	// (20+32) - half of width (20+64+110)/2
 	cube.position.y = 4/2;	// half of height
 	cube.position.z = 0;	// centered at origin
 	scene.add( cube );
-
+	
 	// left foot
-	cube = new THREE.Mesh(
+	cube = new THREE.Mesh( 
 		new THREE.CubeGeometry( 20+64+110, 52, 6 ), cubeMaterial );
 	cube.position.x = -45;	// (20+32) - half of width (20+64+110)/2
 	cube.position.y = 52/2;	// half of height
 	cube.position.z = 77 + 6/2;	// offset 77 + half of depth 6/2
 	scene.add( cube );
-
+	
 	// left leg
-	cube = new THREE.Mesh(
+	cube = new THREE.Mesh( 
 		new THREE.CubeGeometry( 64, 334+52, 6 ), cubeMaterial );
 	cube.position.x = 0;	// centered on origin along X
 	cube.position.y = (334+52)/2;
 	cube.position.z = 77 + 6/2;	// offset 77 + half of depth 6/2
 	scene.add( cube );
-
+	
 	// right foot
-
+	cube = new THREE.Mesh( 
+		new THREE.CubeGeometry( 20+64+110, 52, 6 ), cubeMaterial );
+	cube.position.x = -45;	// (20+32) - half of width (20+64+110)/2
+	cube.position.y = 52/2;	// half of height
+	cube.position.z = -(77 + 6/2);	// offset 77 + half of depth 6/2
+	scene.add( cube );
+	
 	// right leg
-
+	cube = new THREE.Mesh( 
+		new THREE.CubeGeometry( 64, 334+52, 6 ), cubeMaterial );
+	cube.position.x = 0;	// centered on origin along X
+	cube.position.y = (334+52)/2;
+	cube.position.z = -(77 + 6/2);	// offset 77 + half of depth 6/2
+	scene.add( cube );
 }
 
 // Body of the bird - body and the connector of body and head
 function createBody() {
-	var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xA00000 } );
-	var cylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x0000D0 } );
-
+   var s_radius = 116/2;
+   var c_radiusTop = 24/2;
+   var c_radiusBottom = 24/2;
+   var c_height = 390;
+   var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xA00000 } );
+   var cylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x0000D0 } );
+   var sphere = new THREE.Mesh(new THREE.SphereGeometry( s_radius, 32, 16 ), sphereMaterial);
+   var cylinder = new THREE.Mesh (new THREE.CylinderGeometry( c_radiusTop, c_radiusBottom, c_height, 32 ), cylinderMaterial);
+   sphere.position.y= 160;
+   cylinder.position.y = c_height/2 +160;
+   scene.add(cylinder);
+   scene.add(sphere);
 }
 
 // Head of the bird - head + hat
 function createHead() {
-	var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xA00000 } );
-	var cylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x0000D0 } );
-
+   var s_radius = 104/2;
+   var c_radiusTop1 = 142/2;
+   var c_radiusBottom1 = 142/2;
+   var c_height1 = 10;
+   var c_radiusTop2 = 80/2;
+   var c_radiusBottom2 = 80/2;
+   var c_height2 = 70;
+   var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xA00000 } );
+   var cylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x0000D0 } );
+   var sphere = new THREE.Mesh(new THREE.SphereGeometry( s_radius, 32, 16 ), sphereMaterial);
+   var cylinder1 = new THREE.Mesh (new THREE.CylinderGeometry( c_radiusTop1, c_radiusBottom1, c_height1, 32 ), cylinderMaterial);
+   var cylinder2 = new THREE.Mesh (new THREE.CylinderGeometry( c_radiusTop2, c_radiusBottom2, c_height2, 32 ), cylinderMaterial);
+   sphere.position.y= 550;
+   cylinder1.position.y = 597;
+   cylinder2.position.y = 637;
+   scene.add(cylinder1);
+   scene.add(cylinder2);
+   scene.add(sphere);
 }
 
 function createDrinkingBird() {
@@ -203,7 +243,8 @@ try {
 	setupGui();
 	addToDOM();
 	animate();
-} catch(e) {
+}
+catch(e) {
 	var errorReport = "Your program encountered an unrecoverable error, can not draw on canvas. Error was:<br/><br/>";
 	$('#container').append(errorReport+e);
 }
