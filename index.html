@@ -105,7 +105,6 @@
 							'		<option value="?load=demo/unit10-tweening-demo.js">Lesson 10 Tween Keyframing',
 							'		<option value="?load=demo/unit10-jaunty-hat.js">Lesson 10 Jaunty Hat',
 							'</select>',
-
 							'or',
 							'<select name="exercises"',
 							' OnChange="location.href=run.exercises.options[selectedIndex].value">',
@@ -164,7 +163,14 @@
 							'   <option value="unit9/wrap-lighting/index.html">Lesson 9 - Wrap Lighting',
 							'	<option value="?load=unit10/08-set-the-pivot.js">Lesson 10 - Set the Pivot',
 							'	<option value="?load=unit10/17-flowing-river.js">Lesson 10 - Flowing River',
-							'</select>'].join('\n');
+							'</select>',
+							'or',
+							'<select name="myExs"',
+							' OnChange="location.href=run.myExs.options[selectedIndex].value">',
+							'	<option selected>Select exercise',
+							'	<option value="?load=unit3/cube-hue.js">Cube Hue',
+							'</select>'
+						].join('\n');
 
 					if ('undefined' !== typeof loadScript) {
 						elem.innerHTML = elem.innerHTML + "&nbsp;Showing " + loadScript;
